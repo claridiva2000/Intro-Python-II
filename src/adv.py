@@ -1,4 +1,8 @@
 from room import Room
+from player import Player
+from item import Item
+import textwrap
+
 
 # Declare all the rooms
 
@@ -33,19 +37,95 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+# items in rooms
+
+gold = Item('gold', 'Oooh, Shiney!')
+sword = Item('sword', 'Stick \'um with the pointy end.')
+cape = Item('cape', 'looks cozy.')
+
+room['foyer'].items = [cape]
+room['overlook'].items = [sword]
+room['narrow'].items = [gold]
+
+# Inventory
+
+inventory = []
+
+def tryDirection(d, currentRoom):
+    attrib = d +'_to'
+
+    if hasattr(currentRoom, attrib):
+        return getattr(currentRoom, attrib)
+
+    else: 
+        print('You can\'t go there')
+    
+    return currentRoom
 #
 # Main
 #
+movement = ['n', 's', 'e', 'w',]
+
+getStarted = input("Welcome to the kingdom of Equestria! \n What is your name? ")
+print(f'Nice to meet you, {getStarted}.')
+
 
 # Make a new player object that is currently in the 'outside' room.
+player = Player(getStarted, room['outside'])
+# print(player)  
+
 
 # Write a loop that:
-#
+done = False
+# If the user enters "q", quit the game.
+while not done:
+
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
+    print("\n{}\n{}".format(player.currentRoom.name, player.currentRoom.description))
+    print("You look around and see: {} ".format(player.currentRoom.items))
+    if len(player.currentRoom.items) > 0:
+            keep_it = input('Do you want to keep the {}? (y/n)'.format(player.currentRoom.items))
+            if keep_it.strip().casefold() == 'y':
+                    inventory.append(player.currentRoom.items)
+                    player.currentRoom.items = []
+                    print(inventory)
+                    continue
+
+
 # * Waits for user input and decides what to do.
+    s= input(" What direction should we go now? \nCommand> ").strip().lower().split()
+
+    if s[0] == "q" or s[0] == "Q":
+        done = True
+ 
+    elif s[0] == 'h':
+        print("HELP MENU:\n i:inventory \n d: drop from inventory \n q: quit \n\n DIRECTIONS: \n n:north \n s:south \n e:east \n w:west ")
+    
+    elif s[0] == 'i' or s[0] == 'I':
+            index = 0
+            for i in inventory:
+                    index += 1
+                    print(f'{index}.{i}')
+            if len(inventory) == 0:
+                    print('There is nothing in your inventory')
+    
+    elif s[0] == 'd' or s[0]=='D':
+            index = 0
+            for i in inventory:
+                    index += 1
+                    print(f'{index}.{i}')
+            remove = input('what should we remove from your inventory? (choose the number): ' )
+            inventory.remove(inventory[int(remove)-1]) 
+    
+    elif s[0] in movement:
+        player.currentRoom = tryDirection(s[0], player.currentRoom)    
+    else:
+        print("unknown command {}".format(' '.join(s)))
+
 #
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
-# If the user enters "q", quit the game.
+
