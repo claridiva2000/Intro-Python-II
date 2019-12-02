@@ -1,22 +1,15 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 class Player:
-    def __init__(self, name, currentRoom, inventory=[], health=90, mana=95):
+    def __init__(self, name, currentRoom):
         self.name = name
         self.currentRoom = currentRoom
-        self.inventory = inventory
-        self.health = health
-        self.mana = mana
-
-    def add_item(self, item):
-        self.inventory.append(item)
-
-
-
-
-
-
- # direction method here.
+        self.items = []
+    def __str__(self):
+        return f"Hello {self.name}. Your current location is: {self.currentRoom}"
+    
+          
+# direction method here.
     # def playermove(self, cmd):
     #     if getattr(self.currentRoom, f"{cmd}_to") is not None:
     #         self.currentroom = getattr(self.currentroom, f"{cmd}_to")
@@ -31,6 +24,22 @@ class Player:
     #     return output
 
 
+
+
+
+
+
+
+
+
+
+
+#========================================
+# def moveDir(direction):
+     # self.currentRoom=     
+
+# player1 = Player()
+# print(player1)
 
 
 

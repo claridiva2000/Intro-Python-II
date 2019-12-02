@@ -2,21 +2,16 @@
 # description attributes.
 
 class Room:
-    def __init__(self, name, description, items=[], monsters=[]):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.items = items
-        self.monsters = monsters
+        self.items = []
      
 
 
-class Monster(Room):
-    def __init__(self, name, description):
-        super().__init__(name, description)
-        
-
-    # def __str__(self):
-    #   return f'you found {self.name}: \n hit points: {self.hitPoints} \n description: {self.description}'
-
-
-
+    def __str__(self):
+        output = ''
+        output += f"{self.name}"
+        output += f"{self.description}"
+        output += f'{self.items}'
+        return output
